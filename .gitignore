@@ -132,3 +132,5 @@ psd
 thumb
 sketch
 
+# Prisma generated file ignore
+generated
