@@ -10,6 +10,29 @@ datasource db {
 
 model Product {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  price Int
+  authorId       String   @db.String
+  title          String
+  slug           String   @unique
+  description    String   @default("")
+  contentBody    String
+  contentType    String
+  categories     String[] @default([])
+  language       String   @default("en")
+  status         String   @default("draft")
+  coverImageUrl  String   @default("")
+  readTimeMinutes Int      @default(0)
+  viewsCount     Int      @default(0)
+
+  likedBy        String[] @default([])
+
+  comments       Comment[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+type Comment {
+  user      String
+  text      String
+  createdAt DateTime @default(now())
 }
