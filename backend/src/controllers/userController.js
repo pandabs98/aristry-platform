@@ -13,6 +13,10 @@ const prisma = new PrismaClient();
 const registerUser = asyncHandler (async (req,res)=>{
     const  {fullName, username, email, password} = req.body;
 
+    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedUsername = username.trim();
+
+
     if(
         [fullName, username, email, password].some((field)=>field?.trim() === "")
     ){
@@ -21,12 +25,15 @@ const registerUser = asyncHandler (async (req,res)=>{
 
     const existingUser = await prisma.user.findFirst({
         where:{OR:[
-            {email:email},{username:username}
+            {email:normalizedEmail},{username:normalizedUsername}
         ]}
     })
+    console.log(existingUser)
+    const users = await prisma.user.findMany();
+    console.log("All users:", users);
 
     if(existingUser){
-        throw new ApiError (409, "User Already exists with this email ")
+        throw new ApiError (409, "User Already exists with this email or username")
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path
@@ -58,6 +65,7 @@ const registerUser = asyncHandler (async (req,res)=>{
                 emailVerificationToken
             }
         })
+
 
     const verificationLink = `http://localhost:5000/api/v1/users/verify/${emailVerificationToken}`
 

@@ -22,6 +22,9 @@ export const transporter = nodemailer.createTransport({
     user: process.env.ETHEREAL_USER,
     pass: process.env.ETHEREAL_PASS
   },
+  tls: {
+    rejectUnauthorized: false, 
+  }
 });
 
 
@@ -30,9 +33,9 @@ export const sendMail = async (to, subject, html) => {
   try {
     const info = await transporter.sendMail({
   from: '"Artistry" <no-reply@artistry.com>',
-  to: email,
+  to,
   subject: "Verify your email",
-  html: `<p>Click here to verify your account: <a href="${verificationLink}">Verify Email</a></p>`
+  html
 });
 
     console.log("✅ Preview URL:", nodemailer.getTestMessageUrl(info));
