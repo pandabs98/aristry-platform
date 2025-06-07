@@ -8,31 +8,44 @@ datasource db {
   url      = env("MONGO_URL")
 }
 
-model Product {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  authorId       String   @db.String
-  title          String
-  slug           String   @unique
-  description    String   @default("")
-  contentBody    String
-  contentType    String
-  categories     String[] @default([])
-  language       String   @default("en")
-  status         String   @default("draft")
-  coverImageUrl  String   @default("")
-  readTimeMinutes Int      @default(0)
-  viewsCount     Int      @default(0)
-
-  likedBy        String[] @default([])
-
-  comments       Comment[]
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+model Content {
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  body       String
+  type       ContentType
+  status     ContentStatus  @default(DRAFT)
+  authorId   String         @db.ObjectId
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  likes      String[]       @default([])
+  comments   Comment[]      @relation("ContentComments")
 }
 
-type Comment {
-  user      String
-  text      String
-  createdAt DateTime @default(now())
+model Comment {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String     @db.ObjectId
+  contentId  String     @db.ObjectId
+  text       String
+  createdAt  DateTime   @default(now())
+
+  // 👇 This was missing
+  content    Content    @relation("ContentComments", fields: [contentId], references: [id])
+}
+
+
+enum ContentType {
+  NOBLE
+  POEM
+  STORY
+  SONG
+  FABLE
+  PROSE
+  EPIC
+  LEGEND
+  BALLAD
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
 }

@@ -8,9 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "mongodb:generate": "prisma generate --schema=prisma/mongodb/schema.prisma",
     "mongodb:migrate": "prisma migrate dev --schema=prisma/mongodb/schema.prisma",
-    "generate": "npm run generate:pg && npm run generate:mongodb",
+    "generate": "npm run pg:generate && npm run mongodb:generate",
     "pg:migrate": "prisma migrate dev --schema=prisma/postgres/schema.prisma",
     "pg:generate": "prisma generate --schema=prisma/postgres/schema.prisma",
+    "pg:studio":"npx prisma studio --schema=prisma/postgres/schema.prisma",
+    "mongo:studio":"npx prisma studio --schema=prisma/mongodb/schema.prisma",
     "start": "nodemon src/index.js"
   },
   "keywords": [],

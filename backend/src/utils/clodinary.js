@@ -9,12 +9,12 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
-console.log(cloudinary.config())
+// console.log(cloudinary.config())
 
 const uploadOnCloudinary = async (localFilePath)=>{
     try {
         if(!localFilePath) return null
-        const response = await cloudinary.uploder.upload(localFilePath,{
+        const response = await cloudinary.uploader.upload(localFilePath,{
             response_type:"auto"
         })
         console.log("file is uploaded on cloudinary", response.url);
