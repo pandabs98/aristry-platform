@@ -34,7 +34,7 @@ export const sendMail = async (to, subject, html) => {
     const info = await transporter.sendMail({
   from: '"Artistry" <no-reply@artistry.com>',
   to,
-  subject: "Verify your email",
+  subject,
   html
 });
 
