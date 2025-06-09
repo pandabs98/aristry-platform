@@ -43,39 +43,40 @@ backend/
 git clone https://github.com/pandabs98/aristry-platform.git
 cd backend
 npm install
+```
 
-🔐 Environment Variables
+## 🔐 Environment Variables
 Create a .env file in the root directory with the following content:
 
-# Server
+### Server
 PORT=5000
 CORS_ORIGIN=*
 
-# PostgreSQL
+### PostgreSQL
 POSTGRES_URL="postgresql://username:password@localhost:5432/database"
 
-# MongoDB
+### MongoDB
 MONGO_URL="mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority"
 
-# JWT
+### JWT
 JWT_SECRET="your-secret-key"
 
-# Cloudinary
+### Cloudinary 
 CLOUDINARY_CLOUD_NAME="your-cloud-name"
 CLOUDINARY_API_KEY="your-api-key"
 CLOUDINARY_API_SECRET="your-api-secret"
 
 
-🔧 Generate Prisma Clients
+## 🔧 Generate Prisma Clients
 Run these commands to generate Prisma clients:
 npx prisma generate --schema=prisma/postgres/schema.prisma
 npx prisma generate --schema=prisma/mongodb/schema.prisma
 
-🚀 Run the Project
+## 🚀 Run the Project
 npm start
 Your server will run on http://localhost:<PORT> (default: 4001).
 
-📦 Dependencies Used
+## 📦 Dependencies Used
 prisma
 
 @prisma/client
@@ -84,19 +85,27 @@ multer
 
 cloudinary
 
+express
+
 bcrypt
 
 cors
+
+helmet
 
 cookie-parser
 
 jsonwebtoken
 
+nodemailer
+
 dotenv
 
 nodemon
 
-📌 Future Improvements
+prettier
+
+## 📌 Future Improvements
 Role-based access system
 
 Queue system for donations
@@ -105,7 +114,7 @@ Admin dashboard
 
 Read allowed option
 
-🧠 Notes
+## 🧠 Notes
 Prisma clients are generated to generated/postgres-client and generated/mongo-client.
 
 Remember to re-run npx prisma generate after changing any .prisma file.
