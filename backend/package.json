@@ -11,8 +11,8 @@
     "generate": "npm run pg:generate && npm run mongodb:generate",
     "pg:migrate": "prisma migrate dev --schema=prisma/postgres/schema.prisma",
     "pg:generate": "prisma generate --schema=prisma/postgres/schema.prisma",
-    "pg:studio":"npx prisma studio --schema=prisma/postgres/schema.prisma",
-    "mongo:studio":"npx prisma studio --schema=prisma/mongodb/schema.prisma",
+    "pg:studio": "npx prisma studio --schema=prisma/postgres/schema.prisma",
+    "mongo:studio": "npx prisma studio --schema=prisma/mongodb/schema.prisma",
     "start": "nodemon src/index.js"
   },
   "keywords": [],
@@ -26,6 +26,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.1",
     "nodemailer": "^7.0.3"

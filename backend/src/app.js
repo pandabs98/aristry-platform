@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import helmet from "helmet"
 
 const app = express()
 app.use(cors(
@@ -9,10 +10,15 @@ app.use(cors(
         credentials:true
     }
 ))
+app.use(helmet())
 app.use(express.json({limit:"16kb"}))
 app.use(express.urlencoded({extended:true,limit:"16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
+app.use((req, res, next) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
+
 
 
 // Routes import
