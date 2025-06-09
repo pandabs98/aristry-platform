@@ -1,8 +1,8 @@
-🛠 Prisma Schema Update Guide
+# 🛠 Prisma Schema Update Guide
 This guide helps new developers update the schema for MongoDB and PostgreSQL, regenerate Prisma clients, and apply migrations.
 
 
-✅ 1. Add New Parameters to Prisma Schema
+## ✅ 1. Add New Parameters to Prisma Schema
 
 🧾 Mongo Schema Update Example
 For MongoDB (No migrations needed):
@@ -20,7 +20,7 @@ model Content {
   tags      String[] // Example: ["poem", "love", "life"]
 }
 
-✅ Just save the file. No migration is required for MongoDB (because it’s schemaless).
+## ✅ Just save the file. No migration is required for MongoDB (because it’s schemaless).
 
 🧾 Postgres Schema Update Example
 For PostgreSQL (Migration needed):
@@ -35,7 +35,7 @@ model User {
   bio       String?  // Optional field
 }
 
-✅ 2. Run Generator (after schema changes)
+## ✅ 2. Run Generator (after schema changes)
 
 ```
 npm run generate
@@ -43,7 +43,7 @@ or
 npx prisma generate
 ```
 
-✅ 3. Run Migration (PostgreSQL only)
+## ✅ 3. Run Migration (PostgreSQL only)
 
 ```
 npm run pg:migrate
@@ -51,7 +51,7 @@ or
 npx prisma migrate dev --name added-bio-to-user
 ```
 
-🛠 This:
+- 🛠 This:
 
 Applies the schema changes to the DB
 
@@ -66,7 +66,7 @@ npx prisma migrate deploy
 
 ```
 
-✅ 4. Open Prisma Studio (for manual data inspection)
+## ✅ 4. Open Prisma Studio (for manual data inspection)
 
 ```
 npm start pg:studio  # Postgres-Sql
@@ -74,7 +74,7 @@ npm start mg:studio  # MongoDB
 ```
 
 
-🧠 Notes for New Developers
+## 🧠 Notes for New Developers
 Always run npx prisma generate after editing schema.prisma
 
 Only PostgreSQL requires migration; MongoDB does not

@@ -14,7 +14,7 @@ model Content {
   body       String
   type       ContentType
   status     ContentStatus  @default(DRAFT)
-  authorId   String         @db.ObjectId
+  authorId   String
   createdAt  DateTime       @default(now())
   updatedAt  DateTime       @updatedAt
   likes      String[]       @default([])
@@ -23,7 +23,7 @@ model Content {
 
 model Comment {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String     @db.ObjectId
+  userId     String
   contentId  String     @db.ObjectId
   text       String
   createdAt  DateTime   @default(now())

@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "119b0ab2-91c8-43c5-9dfb-eaccd461ffe9",
+		"name": "Artistry",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "44804587",
+		"_collection_link": "https://devapanda-7990038.postman.co/workspace/deva-panda's-Workspace~52c23065-a6d5-48e7-85fe-cbbaaf8f0111/collection/44804587-119b0ab2-91c8-43c5-9dfb-eaccd461ffe9?action=share&source=collection_link&creator=44804587"
+	},
+	"item": [
+		{
+			"name": "Content",
+			"item": [
+				{
+					"name": "Create content",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"rahjana mera pass\",\r\n    \"body\": \"rahjana mera pass tujhe main har pal yaad toh\",\r\n    \"type\": \"POEM\",\r\n    \"status\": \"PUBLISHED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/content/:8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"content",
+								":8"
+							],
+							"variable": [
+								{
+									"key": "8",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch all content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/content/"
+					},
+					"response": []
+				},
+				{
+					"name": "get content by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"ranjhna hua main tera\",\r\n    \"body\": \"rahjana mera pass tujhe main har pal yaad toh\",\r\n    \"type\": \"POEM\",\r\n    \"status\": \"PUBLISHED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/content/68453af72604ac9d5c85687a"
+					},
+					"response": []
+				},
+				{
+					"name": "update content by id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "delete content",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "toggle like",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"i love your content\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/content/comment/6846415e04ddeb63c60208c1"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get all comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/content/all-comments"
+					},
+					"response": []
+				},
+				{
+					"name": "get all content by filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5000/api/v1/content/getFilteredContent"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fullName",
+							"value": "deva panda",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "devapanda9",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "devapanda9@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "devapanda",
+							"type": "text"
+						},
+						{
+							"key": "coverImage",
+							"type": "file",
+							"src": "postman-cloud:///1f03144f-2f40-41a0-8ff9-c38a897fde0b"
+						},
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "postman-cloud:///1f043709-30b3-49f0-a319-0fee20f6273c"
+						}
+					]
+				},
+				"url": "http://localhost:5000/api/v1/users/register"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"devapanda7\",\r\n    \"password\":\"devapanda\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/api/v1/users/login"
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:5000/api/v1/users/logout"
+			},
+			"response": []
+		}
+	]
+}

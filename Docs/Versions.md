@@ -1,3 +1,5 @@
+# Artistry Versions
+
 ## 🚀 v1.0.0 – Core Release
 ✅ User Registration & Login
 ✅ Create / Read / Update / Delete Content

@@ -8,27 +8,33 @@ import {
     toggleLike, 
     addComment, 
     getComments, 
+    getCommentsGroupedByCategory,
     deleteComment,
     getFilteredContent 
-} from "../controllers/contentController";
+} from "../controllers/contentController.js";
+import { verifyJWT } from "../midddleware/auth.middleware.js";
 
 const router = Router();
 
 // content Routes
-router.route("/").post(createContent).get(getAllContent);
+router.route("/").post(verifyJWT, createContent).get(getAllContent);
 
 // get filtered content
 router.route("/getFilteredContent").get(getFilteredContent)
 
+router.route("/all-comments").get(getCommentsGroupedByCategory); // get all comments
+
 // get update and delete content routes
-router.route("/:id").get(getContentById).put(updateContent).delete(deleteContent);
+router.route("/:id").get(getContentById).put(verifyJWT, updateContent).delete(verifyJWT, deleteContent);
 
 // likes
-router.route("/:id/like").post(toggleLike);
+router.route("/:id/like").post(verifyJWT, toggleLike);
 
 // comment routes
-router.route("/:id/comment").post(addComment).get(getComments);
-router.route("/comment/:id").delete(deleteComment) // delete comment
+router.route("/comment/:id").post(verifyJWT, addComment)
+router.route("/comment/:id").get(getComments);
+// router.route("/all-comments").get(getCommentsGroupedByCategory);
+router.route("/comment/:id").delete(verifyJWT, deleteComment) // delete comment
 
 
-export {router}
+export default router
