@@ -4,7 +4,7 @@ Project Overview
 Artistry is a visionary full-stack platform designed to revolutionize how independent artists share their stories, poems, and novels with the world, and how readers consume engaging literary content. Moving beyond traditional publishing models and static reading experiences, Artistry cultivates a dynamic ecosystem where creativity thrives, and engagement is rewarded.
 
 The Problem Artistry Solves
-For Artists & Writers:
+## For Artists & Writers:
 
 Lack of Direct Monetization: Independent writers, poets, and novelists often struggle to monetize their short-form or niche literary works directly. Existing platforms either take large cuts, offer complex revenue models, or lack specific features for direct literary content.
 
@@ -12,7 +12,7 @@ Limited Reach & Discovery: Breaking through the noise in vast content platforms 
 
 Disconnected from Audience: Artists lack direct, tangible incentives tied to reader engagement beyond abstract 'views' or 'likes'.
 
-For Readers:
+## For Readers:
 
 Accessibility Gaps: Many readers face challenges with traditional text-based content due to visual impairment, reading fatigue, or simply a preference for auditory learning.
 
@@ -23,23 +23,23 @@ Passive Consumption: Readers often lack direct ways to support their favorite em
 The Artistry Solution: A Game-Changing Approach
 Artistry tackles these challenges head-on with a suite of innovative features:
 
-Direct Follower-Based Monetization for Artists:
+## Direct Follower-Based Monetization for Artists:
 
 This is our core differentiator. Unlike platforms that rely solely on ad revenue or complex subscription tiers, Artistry introduces a direct monetization pathway for artists once they achieve 1000+ followers. This tangible metric empowers creators by directly linking their earnings to their growing community, fostering dedication and high-quality content. It's a clear, achievable goal that motivates continuous engagement.
 
-Seamless "Read Aloud" Integration:
+## Seamless "Read Aloud" Integration:
 
 Understanding the diverse needs of readers, Artistry incorporates a native "Read Aloud" option for all literary content. This transforms the reading experience, making content accessible to visually impaired users, offering an alternative for those with reading fatigue, and catering to auditory learners or those who prefer to consume content on the go. This feature significantly broadens audience reach and enhances user convenience.
 
-Free Access for All Readers:
+## Free Access for All Readers:
 
 All content on Artistry is freely accessible to readers, removing barriers to entry and encouraging widespread discovery of new artists and diverse literary works. This fosters a vibrant community and maximizes exposure for creators.
 
-Dedicated Literary Hub:
+## Dedicated Literary Hub:
 
 Artistry is purpose-built for stories, poems, and novels, creating a focused community for literary enthusiasts. This ensures better content discovery and a more engaged audience for artists.
 
-Robust Community Engagement:
+## Robust Community Engagement:
 
 Standardized features like likes and comments enable direct interaction between artists and their audience, fostering a supportive and interactive creative environment. The follower count, a key to monetization, further encourages community building.
 
@@ -67,15 +67,15 @@ Artistry is fully containerized for ease of setup and consistent environments.
 
 To get the project up and running on your local machine:
 
-Clone the repository:
-
+## Clone the repository:
+```bash
 git clone [(https://github.com/pandabs98/aristry-platform)]
 cd artisty-platform
-
+```
 Set up environment variables:
 Create a .env file in the project root and populate it with your database connection strings (PostgreSQL, MongoDB), JWT secrets, and Cloudinary credentials. (Refer to .env.example if provided in the repo).
 
-Launch with Docker Compose:
+## Launch with Docker Compose:
 
 docker-compose up --build
 
@@ -104,7 +104,7 @@ Building this project has involved designing complex, distributed systems, manag
 
 We believe Artistry has the potential to redefine digital literary engagement. Explore the code, delve into the features, and see the future of storytelling unfold!
 
-Connect with Me:
+## Connect with Me:
 - LinkedIn: [linkedin.com/in/bhagyashwariya](#)
 - Email: bspanda98@gmail.com
 - GitHub: [github.com/pandabs](https://github.com/pandabs)
