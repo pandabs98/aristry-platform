@@ -12,7 +12,7 @@ import {
     deleteComment,
     getFilteredContent 
 } from "../controllers/contentController.js";
-import { verifyJWT } from "../midddleware/auth.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 

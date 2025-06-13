@@ -10,8 +10,8 @@ import {
     updateCoverImage,
     deleteUser,
 } from "../controllers/userController.js";
-import { upload } from "../midddleware/multer.middleware.js";
-import { verifyJWT } from "../midddleware/auth.middleware.js";
+import { upload } from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -24,7 +24,7 @@ router.route("/register").post(upload.fields([
 router.route("/login").post(loginUser)
 router.post("/logout", verifyJWT, logOut)
 router.route("/change-password").post(verifyJWT, changeCurrentPassword)
-router.route("/current-user").get(verifyJWT, getCurrentUser)
+router.route("/me").get(verifyJWT, getCurrentUser)
 router.route("/update-account").patch(verifyJWT, updateAccountDetails)
 
 router.post(

@@ -219,9 +219,18 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 // Get current user Api
 const getCurrentUser = asyncHandler(async(req,res)=>{
-    return res.status(200).json(
-        new ApiResponse(200, req.user, "current user fetched successfully")
-    )
+    try {
+    res.status(200).json({ user: {
+    id: user.id,
+    fullName: user.fullName,
+    email: user.email,
+    username: user.username,
+    avatar: { url: user.avatar }, // only if using file URL
+  } })
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch user" })
+  }
+
 })
 
 
