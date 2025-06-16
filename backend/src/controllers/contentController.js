@@ -8,6 +8,7 @@ import { ApiError } from '../utils/ApiError.js';
 export const pg = new PostgresClient();  // For User
 export const mongo = new MongoClient();  // For Content & Comment
 
+// create content
 const createContent = asyncHandler(async (req, res) => {
     const userId = req.user?.id;
 

@@ -219,6 +219,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 // Get current user Api
 const getCurrentUser = asyncHandler(async(req,res)=>{
+    const user = req.user
     try {
     res.status(200).json({ user: {
     id: user.id,
