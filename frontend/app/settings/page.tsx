@@ -11,6 +11,8 @@ import DashboardLayout from '@/components/layouts/DashboardLayout'
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [coverFile, setCoverFile] = useState<File | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -19,16 +21,12 @@ export default function SettingsPage() {
       .catch(() => toast.error('Failed to load user'))
   }, [])
 
-  const handleUpdate = async () => {
+  const handleUpdateAccount = async () => {
     setLoading(true)
     try {
-      await api.put('/users/update', {
+      await api.patch('/users/update-account', {
         fullName: user.fullName,
-        email: user.email,
-        username: user.username,
-        password: user.password,
-        avatar: user.avatar,
-        coverImage: user.coverImage,
+        email: user.email
       })
       toast.success('Profile updated successfully')
     } catch {
@@ -38,10 +36,36 @@ export default function SettingsPage() {
     }
   }
 
+  const handleAvatarUpload = async () => {
+    if (!avatarFile) return toast.error("No avatar selected")
+    const formData = new FormData()
+    formData.append('avatar', avatarFile)
+
+    try {
+      await api.post('/users/update-avatar', formData)
+      toast.success('Avatar updated successfully')
+    } catch {
+      toast.error('Avatar update failed')
+    }
+  }
+
+  const handleCoverUpload = async () => {
+    if (!coverFile) return toast.error("No cover image selected")
+    const formData = new FormData()
+    formData.append('coverImage', coverFile)
+
+    try {
+      await api.post('/users/update-cover-image', formData)
+      toast.success('Cover image updated successfully')
+    } catch {
+      toast.error('Cover image update failed')
+    }
+  }
+
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete your account?')) return
     try {
-      await api.delete('/users/delete')
+      await api.post('/users/deleteUser') 
       toast.success('Account deleted')
       router.push('/login')
     } catch {
@@ -62,38 +86,35 @@ export default function SettingsPage() {
           onChange={e => setUser({ ...user, fullName: e.target.value })}
         />
         <Input
-          placeholder="Email"
-          type="email"
-          value={user.email}
-          onChange={e => setUser({ ...user, email: e.target.value })}
-        />
-        <Input
           placeholder="Username"
           value={user.username}
           onChange={e => setUser({ ...user, username: e.target.value })}
         />
         <Input
-          placeholder="Password"
-          type="password"
-          value={user.password || ''}
-          onChange={e => setUser({ ...user, password: e.target.value })}
-        />
-        <Input
-          placeholder="Avatar Image URL"
-          value={user.avatar}
-          onChange={e => setUser({ ...user, avatar: e.target.value })}
-        />
-        <Input
-          placeholder="Cover Image URL"
-          value={user.coverImage}
-          onChange={e => setUser({ ...user, coverImage: e.target.value })}
+          placeholder="Email"
+          type="email"
+          value={user.email}
+          onChange={e => setUser({ ...user, email: e.target.value })}
         />
 
-        <Button onClick={handleUpdate} disabled={loading} className="w-full">
-          {loading ? 'Updating...' : 'Update Profile'}
+        <Button onClick={handleUpdateAccount} disabled={loading} className="w-full">
+          {loading ? 'Updating...' : 'Update Account'}
         </Button>
 
-        {/* Delete button at bottom in red */}
+        <hr className="my-4" />
+
+        <div>
+          <p className="font-semibold mb-2">Upload Avatar</p>
+          <Input type="file" onChange={e => setAvatarFile(e.target.files?.[0] || null)} />
+          <Button onClick={handleAvatarUpload} className="mt-2">Upload Avatar</Button>
+        </div>
+
+        <div>
+          <p className="font-semibold mt-4 mb-2">Upload Cover Image</p>
+          <Input type="file" onChange={e => setCoverFile(e.target.files?.[0] || null)} />
+          <Button onClick={handleCoverUpload} className="mt-2">Upload Cover Image</Button>
+        </div>
+
         <div className="mt-12">
           <Button
             variant="destructive"

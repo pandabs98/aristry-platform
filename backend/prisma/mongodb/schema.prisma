@@ -8,30 +8,35 @@ datasource db {
   url      = env("MONGO_URL")
 }
 
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  username String
+  comments Comment[] @relation("UserComments")
+  contents Content[] @relation("UserContents")
+}
+
 model Content {
-  id         String         @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  body       String
-  type       ContentType
-  status     ContentStatus  @default(DRAFT)
-  authorId   String
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  likes      String[]       @default([])
-  comments   Comment[]      @relation("ContentComments")
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  body      String
+  type      ContentType
+  status    ContentStatus
+  authorId  String // stored as plain string
+  author    User?         @relation("UserContents", fields: [authorId], references: [id])
+  likes     String[]      @default([])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model Comment {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String
-  contentId  String     @db.ObjectId
-  text       String
-  createdAt  DateTime   @default(now())
-
-  // 👇 This was missing
-  content    Content    @relation("ContentComments", fields: [contentId], references: [id])
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  contentId String // stored as plain string
+  userId    String
+  user      User     @relation("UserComments", fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
-
 
 enum ContentType {
   NOBLE

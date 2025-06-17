@@ -8,7 +8,7 @@ import DashboardLayout from '@/components/layouts/DashboardLayout'
 import { toast } from 'sonner'
 
 export default function Home() {
-  const [user, setUser] = useState<null | any>(undefined) // undefined = loading, null = not logged in
+  const [user, setUser] = useState<null | any>(undefined)
   const [posts, setPosts] = useState<any[]>([])
   const router = useRouter()
 
@@ -18,7 +18,7 @@ export default function Home() {
         const userRes = await api.get('/users/me')
         setUser(userRes.data.user)
       } catch {
-        setUser(null) // user not logged in
+        setUser(null)
       }
 
       try {
@@ -58,45 +58,27 @@ export default function Home() {
           posts.map((post) => (
             <div
               key={post.id}
-              className="border border-gray-200 p-4 rounded-md shadow-sm bg-white"
+              className="border border-gray-200 p-4 rounded-md shadow-sm bg-white cursor-pointer"
+              onClick={() => router.push(`/posts/${post.id}`)} // ✅ navigate to full content page
             >
               <h2 className="text-xl font-semibold mb-1">{post.title}</h2>
-              <p className="text-gray-700 mb-2">
-                {(post.content ? post.content.slice(0, 200) : 'No content available') + '...'}
-              </p>
-              <p className="text-sm text-gray-500 mb-3">
-                By: {post.writer?.name || 'Unknown'}
-              </p>
+              <p className="text-gray-700 mb-2">{post.body}</p> {/* ✅ show full body */}
+              <p className="text-sm text-gray-500">By: {post.author?.name || 'Unknown'}</p>
+
 
               <div className="flex flex-wrap gap-3">
                 {user ? (
-                  <>
-                    <Button onClick={() => handleLike(post.id)}>👍 Like</Button>
-                    <Button
-                      onClick={() => handleFollow(post.writer.id)}
-                    >
-                      ➕ Follow
-                    </Button>
-                  </>
+                  <Button onClick={(e) => { e.stopPropagation(); handleLike(post.id) }}>
+                    👍 {post.likes?.length || 0} Like
+                  </Button>
                 ) : (
-                  <>
-                    <Button
-                      variant="outline"
-                      onClick={() => router.push('/login')}
-                    >
-                      Login to Like
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => router.push('/login')}
-                    >
-                      Login to Follow
-                    </Button>
-                  </>
+                  <Button
+                    variant="outline"
+                    onClick={(e) => { e.stopPropagation(); router.push('/login') }}
+                  >
+                    Login to Like
+                  </Button>
                 )}
-                <Button onClick={() => router.push(`/posts/${post.id}`)}>
-                  💬 Comment
-                </Button>
               </div>
             </div>
           ))
@@ -109,17 +91,17 @@ export default function Home() {
     try {
       await api.post(`/content/${postId}/like`)
       toast.success('Liked the post!')
+
+      // Update like count locally
+      setPosts((prev) =>
+        prev.map((post) =>
+          post.id === postId
+            ? { ...post, likes: post.likes?.includes(user.id) ? post.likes.filter((uid: string) => uid !== user.id) : [...(post.likes || []), user.id] }
+            : post
+        )
+      )
     } catch {
       toast.error('Failed to like post')
-    }
-  }
-
-  async function handleFollow(writerId: string) {
-    try {
-      await api.post(`/users/${writerId}/follow`)
-      toast.success('Followed the writer!')
-    } catch {
-      toast.error('Failed to follow user')
     }
   }
 }

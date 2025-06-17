@@ -237,9 +237,9 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
 
 // Get account details api
 const updateAccountDetails = asyncHandler(async(req,res)=>{
-    const {fullName, email} = req.body
+    const {fullName, email, username} = req.body
 
-    if(!fullName || !email){
+    if(!fullName || !email || !username){
         throw new ApiError(400, "All Fields are required")
     }
     const user = await prisma.user.findUnique({ where: { id: req.user?.id, } 
@@ -252,7 +252,8 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
         where:{id:req.user.id},
         data:{
             fullName,
-            email:email.toLowerCase().trim()
+            email:email.toLowerCase().trim(),
+            username:username.toLowerCase().trim()
         },
         select:{
             id:true,

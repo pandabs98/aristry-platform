@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -67,6 +68,13 @@ export default function LoginPage() {
           {loading ? 'Logging in...' : 'Login'}
         </Button>
       </form>
+
+      <p className="text-sm text-center mt-4">
+        Don’t have an account?{' '}
+        <Link href="/register" className="text-blue-600 hover:underline">
+          Register
+        </Link>
+      </p>
     </div>
   )
 }

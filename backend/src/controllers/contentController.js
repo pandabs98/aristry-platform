@@ -38,23 +38,58 @@ const createContent = asyncHandler(async (req, res) => {
 
 // get all content
 const getAllContent = asyncHandler(async (req, res) => {
+  const { id, username } = req.params;
+
+  const contents = await mongo.content.findMany({
+    where: { authorId: id, username: username},
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+
+  res.status(200).json(new ApiResponse(200, contents, "All contents"));
+});
+
+
+// GET /api/v1/content
+const getUserContent = asyncHandler(async (req, res) => {
+    const userId = req.user?.id;
+    if (!userId) throw new ApiError(401, "Unauthorized");
+
     const contents = await mongo.content.findMany({
+        where: {
+            authorId: userId.toString()
+        },
         orderBy: {
             createdAt: 'desc'
         }
-    })
-    res.status(200).json(new ApiResponse(200, contents, "All contents"))
-})
+    });
+
+    res.status(200).json(new ApiResponse(200, contents, "User's content fetched"));
+});
+
 
 // get content by id
+// GET /api/v1/content/:id
 const getContentById = asyncHandler(async (req, res) => {
     const { id } = req.params;
+
     const content = await mongo.content.findUnique({ where: { id } });
+    if (!content) throw new ApiError(404, "Content not found");
 
-    if (!content) throw new ApiError(404, "content not found")
+    const userIdNum = parseInt(content.authorId);
+    if (isNaN(userIdNum)) {
+        throw new ApiError(400, "Invalid authorId format");
+    }
 
-    res.status(200).json(new ApiResponse(200, content, "content found"))
-})
+    const author = await pg.user.findUnique({
+        where: { id: userIdNum },
+        select: { id: true, username: true, fullName: true } // <-- replace `username` with actual field
+    });
+
+    res.status(200).json(new ApiResponse(200, { ...content, author }, "content found"));
+});
+
 
 // update content
 const updateContent = asyncHandler(async (req, res) => {
@@ -78,7 +113,7 @@ const updateContent = asyncHandler(async (req, res) => {
             authorId: userId.toString()
         }
     });
-    
+
     res.status(200).json(new ApiResponse(200, updated, "Content Updated"))
 })
 
@@ -115,10 +150,13 @@ const toggleLike = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const userId = req.user.id.toString();
 
-    const content = await mongo.content.findUnique({ where: { id } });
+    const content = await mongo.content.findUnique({
+        where: { id },
+        select: { id: true, likes: true }
+    });
     if (!content) throw new ApiError(404, "Content not found");
 
-    const alreadyLiked = content.likes.includes(userId);
+    const alreadyLiked = (content.likes || []).includes(userId);
 
     const updated = await mongo.content.update({
         where: { id },
@@ -136,23 +174,20 @@ const toggleLike = asyncHandler(async (req, res) => {
 // POST /api/v1/content/comment/:id
 
 const addComment = asyncHandler(async (req, res) => {
-    const { id } = req.params; 
-    const userId = req.user?.id?.toString();  // Get user ID from token
+    const { id } = req.params;
     const { text } = req.body;
 
-    if (!userId) {
-        throw new ApiError(401, "Unauthorized user");
-    }
+    const userIdFromToken = req.user?.id;  // PostgreSQL user ID like "15"
+    if (!userIdFromToken) throw new ApiError(401, "Unauthorized user");
 
-    if (!id || !text) {
-        throw new ApiError(400, "Missing content ID or text");
-    }
+    if (!id || !text) throw new ApiError(400, "Missing content ID or text");
 
+    // Create comment using PostgreSQL ID directly as a string
     const comment = await mongo.comment.create({
         data: {
             text,
             contentId: id,
-            userId: userId
+            userId: String(userIdFromToken) // Treat it as string
         }
     });
 
@@ -161,18 +196,39 @@ const addComment = asyncHandler(async (req, res) => {
 
 
 
+
 // get comments by id
 // GET /api/v1/content/comments/:id 
 const getComments = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
+    // 1. Fetch all comments
     const comments = await mongo.comment.findMany({
         where: { contentId: id },
         orderBy: { createdAt: "desc" }
     });
 
-    res.status(200).json(new ApiResponse(200, comments, "Comments fetched"));
+    // 2. Get all unique userIds
+    const userIds = [...new Set(comments.map(c => parseInt(c.userId)))];
+
+    // 3. Fetch user info from PostgreSQL
+    const users = await pg.user.findMany({
+        where: { id: { in: userIds } },
+        select: { id: true, username: true } // replace with actual field
+    });
+
+    const userMap = {};
+    users.forEach(user => userMap[user.id] = user);
+
+    // 4. Merge user info into each comment
+    const enriched = comments.map(comment => ({
+        ...comment,
+        user: userMap[parseInt(comment.userId)] || null
+    }));
+
+    res.status(200).json(new ApiResponse(200, enriched, "Comments fetched"));
 });
+
 
 // get all comments
 const getCommentsGroupedByCategory = asyncHandler(async (req, res) => {
@@ -250,6 +306,7 @@ const getFilteredContent = asyncHandler(async (req, res) => {
 export {
     createContent,
     getAllContent,
+    getUserContent,
     getContentById,
     updateContent,
     deleteContent,

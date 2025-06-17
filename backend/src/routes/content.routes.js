@@ -4,6 +4,7 @@ import {
     getAllContent, 
     getContentById, 
     updateContent, 
+    getUserContent,
     deleteContent, 
     toggleLike, 
     addComment, 
@@ -18,6 +19,9 @@ const router = Router();
 
 // content Routes
 router.route("/").post(verifyJWT, createContent).get(getAllContent);
+
+// get user content in dashboard
+router.route("/getUserContent").get(verifyJWT, getUserContent)
 
 // get filtered content
 router.route("/getFilteredContent").get(getFilteredContent)

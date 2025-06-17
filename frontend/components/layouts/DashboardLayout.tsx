@@ -85,24 +85,31 @@ export default function DashboardLayout({ children, user }: DashboardLayoutProps
             <Input type="text" placeholder="Search..." className="w-full max-w-md" />
           </div>
           <div className="w-1/3 flex justify-end items-center gap-4">
-            <Button onClick={() => router.push('/posts/create')}>Create</Button>
-            {user?.avatar?.url && (
-              <img src={user.avatar.url} alt="avatar" className="w-8 h-8 rounded-full border" />
+            {user ? (
+              <>
+                <Button onClick={() => router.push('/posts/create')}>Create</Button>
+                {user.avatar?.url && (
+                  <img src={user.avatar.url} alt="avatar" className="w-8 h-8 rounded-full border" />
+                )}
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    api.post('/users/logout')
+                      .then(() => {
+                        toast.success('Logged out')
+                        router.push('/login')
+                      })
+                      .catch(() => toast.error('Logout failed'))
+                  }}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button onClick={() => router.push('/login')}>Login</Button>
             )}
-            <Button
-              variant="outline"
-              onClick={() => {
-                api.post('/users/logout')
-                  .then(() => {
-                    toast.success('Logged out')
-                    router.push('/login')
-                  })
-                  .catch(() => toast.error('Logout failed'))
-              }}
-            >
-              Logout
-            </Button>
           </div>
+
         </nav>
 
         {/* Page Content */}
