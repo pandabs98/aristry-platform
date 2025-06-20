@@ -7,10 +7,11 @@ import { Input } from '@/components/ui/input'
 import api from '@/lib/axios'
 import { toast } from 'sonner'
 import clsx from 'clsx'
+import Image from 'next/image';
 
 type DashboardLayoutProps = {
   children: ReactNode
-  user: {
+  user?: {
     fullName: string
     avatar?: { url: string }
   }
@@ -89,10 +90,13 @@ export default function DashboardLayout({ children, user }: DashboardLayoutProps
               <>
                 <Button onClick={() => router.push('/posts/create')}>Create</Button>
                 {user.avatar?.url && (
-                  <img src={user.avatar.url} alt="avatar" className="w-8 h-8 rounded-full border" />
+                  <Image src={user.avatar.url}
+                    width={500}
+                    height={300}
+                    alt="avatar" className="w-8 h-8 rounded-full border" />
                 )}
                 <Button
-                  variant="outline"
+                  variant="danger"
                   onClick={() => {
                     api.post('/users/logout')
                       .then(() => {

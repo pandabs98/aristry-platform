@@ -13,7 +13,8 @@
     "pg:generate": "prisma generate --schema=prisma/postgres/schema.prisma",
     "pg:studio": "npx prisma studio --schema=prisma/postgres/schema.prisma",
     "mongo:studio": "npx prisma studio --schema=prisma/mongodb/schema.prisma",
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js "
   },
   "keywords": [],
   "author": "Bhagyashwariya Panda",

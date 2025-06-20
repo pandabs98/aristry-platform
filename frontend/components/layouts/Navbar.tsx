@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import api from '@/lib/axios'
+import Image from 'next/image';
 
 type User = {
   fullName: string
@@ -37,10 +38,10 @@ export default function Navbar() {
       <div className="w-1/3 flex justify-end items-center gap-4">
         <Button onClick={() => router.push('/posts/create')}>Create</Button>
         {user?.avatar?.url && (
-          <img src={user.avatar.url} alt="avatar" className="w-8 h-8 rounded-full border" />
+          <Image src={user.avatar.url} alt="avatar" className="w-8 h-8 rounded-full border" />
         )}
         <Button
-          variant="outline"
+          variant="danger"
           onClick={() => {
             api.post('/users/logout')
               .then(() => {

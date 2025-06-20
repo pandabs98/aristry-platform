@@ -1,7 +1,13 @@
 // next.config.mjs
 
-export default {
-  experimental: {
-    allowedDevOrigins: ['http://192.168.33.101:3000', 'http://localhost:3000']
-  }
-}
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
+};
+
+export default nextConfig;

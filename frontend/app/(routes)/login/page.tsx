@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import Link from 'next/link'
+import DashboardLayout from '@/components/layouts/DashboardLayout'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -33,7 +34,7 @@ export default function LoginPage() {
   const onSubmit = async (data: FormData) => {
     setLoading(true)
     try {
-      const res = await axios.post('/users/login', data)
+      await axios.post('/users/login', data)
       toast.success('Login successful')
       router.push('/dashboard')
     } catch (error: any) {
@@ -44,6 +45,7 @@ export default function LoginPage() {
   }
 
   return (
+    <DashboardLayout >
     <div className="w-full max-w-md mx-auto mt-20 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -76,5 +78,6 @@ export default function LoginPage() {
         </Link>
       </p>
     </div>
+    </DashboardLayout>
   )
 }

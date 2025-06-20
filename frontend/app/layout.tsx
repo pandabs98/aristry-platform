@@ -1,18 +1,5 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 
 export default function RootLayout({
   children,
@@ -21,9 +8,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        {/* Runtime Google Fonts loading (prevents build-time errors) */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Geist&family=Geist+Mono&display=swap"
+          rel="stylesheet"
+        />
+        <style>{`
+          :root {
+            --font-geist-sans: 'Geist', sans-serif;
+            --font-geist-mono: 'Geist Mono', monospace;
+          }
+        `}</style>
+      </head>
+      <body className="antialiased" style={{ fontFamily: "var(--font-geist-sans)" }}>
         <Toaster position="top-right" />
         {children}
       </body>

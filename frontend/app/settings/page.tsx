@@ -117,7 +117,7 @@ export default function SettingsPage() {
 
         <div className="mt-12">
           <Button
-            variant="destructive"
+            variant="danger"
             className="w-full"
             onClick={handleDelete}
           >

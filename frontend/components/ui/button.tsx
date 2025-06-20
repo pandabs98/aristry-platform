@@ -1,26 +1,33 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'default' | 'ghost' | 'outline' | 'danger' | 'destructive'; // Add more if needed
+}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, type = "button", ...props }, ref) => {
+  ({ variant = 'default', className, ...props }, ref) => {
+    const baseStyle = "px-4 py-2 rounded";
+    const variantStyles = {
+      default: "bg-blue-600 text-white",
+      ghost: "bg-black text-white hover:bg-gray-700",
+      outline: "border border-gray-400",
+      danger: "bg-black text-white hover:bg-red-600 ",
+      destructive: "bg-black text-white"
+    };
+
     return (
       <button
-        type={type}
-        className={cn(
-          "inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white",
-          "transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-          "disabled:opacity-50 disabled:pointer-events-none",
-          className
-        )}
         ref={ref}
+        className={`${baseStyle} ${variantStyles[variant]} ${className}`}
         {...props}
       />
     );
   }
 );
 
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
 export { Button };
+export type { ButtonProps };

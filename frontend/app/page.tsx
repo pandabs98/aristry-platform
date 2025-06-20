@@ -73,7 +73,7 @@ export default function Home() {
                   </Button>
                 ) : (
                   <Button
-                    variant="outline"
+                    variant="default"
                     onClick={(e) => { e.stopPropagation(); router.push('/login') }}
                   >
                     Login to Like

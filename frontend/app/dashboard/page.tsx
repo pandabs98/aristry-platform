@@ -6,6 +6,7 @@ import api from '@/lib/axios'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import Image from 'next/image';
 
 type User = {
   fullName: string
@@ -36,6 +37,7 @@ export default function Dashboard() {
         const res = await api.get('/users/me')
         setUser(res.data.user)
       } catch (err) {
+        console.error(err)
         toast.error("You must be logged in")
         router.push('/login')
       }
@@ -91,10 +93,13 @@ export default function Dashboard() {
           <div className="w-1/3 flex justify-end items-center gap-4">
             <Button onClick={() => router.push('/posts/create')}>Create</Button>
             {user.avatar?.url && (
-              <img src={user.avatar.url} alt="avatar" className="w-8 h-8 rounded-full border" />
+              <Image src={user.avatar.url}
+                width={800}
+                height={600}
+                alt="avatar" className="w-8 h-8 rounded-full border" />
             )}
             <Button
-              variant="outline"
+              variant="danger"
               onClick={() => {
                 api.post('/users/logout')
                   .then(() => {
@@ -128,8 +133,8 @@ export default function Dashboard() {
                   <p className="text-sm text-gray-600 line-clamp-3">{post.body}</p>
                   <p className="text-xs text-gray-400 mt-2">{new Date(post.createdAt).toLocaleString()}</p>
                   <div className="flex gap-2 mt-4">
-                    <Button size="sm" onClick={() => router.push(`/posts/edit/${post.id}`)}>Edit</Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleDelete(post.id)}>Delete</Button>
+                    <Button onClick={() => router.push(`/posts/edit/${post.id}`)}>Edit</Button>
+                    <Button variant="danger" onClick={() => handleDelete(post.id)}>Delete</Button>
                   </div>
                 </div>
               ))}
