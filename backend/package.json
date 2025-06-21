@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mongodb:generate": "prisma generate --schema=prisma/mongodb/schema.prisma",
+    "mongodb:generate": "npx prisma generate --schema=prisma/mongodb/schema.prisma",
     "mongodb:migrate": "prisma migrate dev --schema=prisma/mongodb/schema.prisma",
     "generate": "npm run pg:generate && npm run mongodb:generate",
     "pg:migrate": "prisma migrate dev --schema=prisma/postgres/schema.prisma",
-    "pg:generate": "prisma generate --schema=prisma/postgres/schema.prisma",
+    "pg:generate": "npx prisma generate --schema=prisma/postgres/schema.prisma",
     "pg:studio": "npx prisma studio --schema=prisma/postgres/schema.prisma",
     "mongo:studio": "npx prisma studio --schema=prisma/mongodb/schema.prisma",
     "start": "node src/index.js",
@@ -20,7 +20,7 @@
   "author": "Bhagyashwariya Panda",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.10.1",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.6.1",
     "cookie-parser": "^1.4.7",
@@ -35,6 +35,6 @@
   "devDependencies": {
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
-    "prisma": "^6.9.0"
+    "prisma": "^6.10.1"
   }
 }

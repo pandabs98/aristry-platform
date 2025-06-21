@@ -14,6 +14,7 @@ COPY prisma/mongodb/schema.prisma ./prisma/mongodb/schema.prisma
 RUN npx prisma generate --schema=./prisma/postgres/schema.prisma
 RUN npx prisma generate --schema=./prisma/mongodb/schema.prisma
 
+
 # Copy rest of app after generating clients
 COPY . .
 
@@ -30,7 +31,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.env .env
 COPY --from=builder /app/package.json ./package.json
 
-# If you have generated mongo client into `generated/mongo-client`, copy it too
 COPY --from=builder /app/generated ./generated            
 
 # Copy entrypoint and give permission

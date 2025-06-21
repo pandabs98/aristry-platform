@@ -5,11 +5,9 @@
 
 generator client {
   provider      = "prisma-client-js"
-  output        = "../../generated/mongo-client/index.js"
+  output        = "../../generated/mongo-client"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
-
-
 
 
 
