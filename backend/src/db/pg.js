@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/mongo-client/index.js";
+import { PrismaClient } from "../../generated/postgres-client/index.js";
 
 const pgClient = new PrismaClient();
 

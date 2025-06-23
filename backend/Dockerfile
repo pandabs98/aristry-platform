@@ -3,19 +3,26 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
 RUN npm install --omit=dev
 
-# Copy only Prisma schema to generate clients
-COPY prisma/postgres/schema.prisma ./prisma/postgres/schema.prisma
-COPY prisma/mongodb/schema.prisma ./prisma/mongodb/schema.prisma
+# Copy Prisma schema only
+COPY prisma ./prisma
 
-# Generate Prisma clients (PostgreSQL and MongoDB)
-RUN npx prisma generate --schema=./prisma/postgres/schema.prisma
-RUN npx prisma generate --schema=./prisma/mongodb/schema.prisma
+# Generate Prisma clients inside the Docker environment
+# RUN npx prisma generate --schema=./prisma/postgres/schema.prisma
+# RUN npx prisma generate --schema=./prisma/mongodb/schema.prisma
+
+# Generate Prisma clients
+RUN echo "📦 Generating Prisma Client for PostgreSQL..." \
+  && npx prisma generate --schema=./prisma/postgres/schema.prisma
+
+RUN echo "📦 Generating Prisma Client for MongoDB..." \
+  && npx prisma generate --schema=./prisma/mongodb/schema.prisma
 
 
-# Copy rest of app after generating clients
+
+# Now copy the full app
 COPY . .
 
 # Stage 2: Final image
@@ -23,21 +30,16 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy essential files
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma 
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/generated ./generated
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.env .env
 COPY --from=builder /app/package.json ./package.json
-
-COPY --from=builder /app/generated ./generated            
-
-# Copy entrypoint and give permission
+COPY --from=builder /app/.env .env
 COPY --from=builder /app/docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chmod +x ./docker-entrypoint.sh
 
-RUN npm install --omit=dev
+RUN chmod +x ./docker-entrypoint.sh
 
 EXPOSE 5000
 CMD ["./docker-entrypoint.sh"]
